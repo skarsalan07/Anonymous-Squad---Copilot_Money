@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-dotenv
+uvicorn
+python-dotenv
+sqlmodel
+alembic
+pydantic
+groq
+yfinance
+pandas
+httpx
+python-multipart
+duckduckgo-search
+psycopg2-binary

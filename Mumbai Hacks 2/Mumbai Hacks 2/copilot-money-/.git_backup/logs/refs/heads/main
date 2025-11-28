@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 a87c2c69ad3d71f19c96db6b547c91197c108efb Arsalan Shaikh 07 <skarsalan8983@gmail.com> 1763313444 +0530	clone: from https://github.com/Khansahab2/copilot-money-.git
+a87c2c69ad3d71f19c96db6b547c91197c108efb d9a4047ced9b18688f3ca5c58157159c3ef1b393 Arsalan Shaikh 07 <skarsalan8983@gmail.com> 1763402852 +0530	commit: groq news and llm is working
+d9a4047ced9b18688f3ca5c58157159c3ef1b393 04e16976495526bb2b994c835ef0a2e702ba2f6e Arsalan Shaikh 07 <skarsalan8983@gmail.com> 1763537112 +0530	commit: comeplte code llm and news integrates uing groq
+04e16976495526bb2b994c835ef0a2e702ba2f6e 1bd97151b74f602021b2adbeb085bf7c0af0c3c4 Khansahab2 <abuzarkhan.ip123@gmail.com> 1764005049 +0530	commit: Update trades router and latest changes
+1bd97151b74f602021b2adbeb085bf7c0af0c3c4 8949d55fe0a5579dd2e5dbd38990918732b7dfc9 Khansahab2 <abuzarkhan.ip123@gmail.com> 1764005570 +0530	commit (amend): Update trades router and latest changes (removed secrets)

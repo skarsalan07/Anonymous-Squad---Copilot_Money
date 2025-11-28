@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 98%;
+    --foreground: 217 33% 17%;
+
+    /* Trust Navy - Primary brand color */
+    --primary: 210 66% 12%;
+    --primary-foreground: 0 0% 98%;
+
+    /* Intelligent Copper - Premium accent */
+    --copper: 30 56% 46%;
+    --copper-foreground: 0 0% 100%;
+    
+    /* Secondary surfaces */
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 217 33% 17%;
+
+    /* Muted elements */
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 13% 46%;
+
+    /* Accent surfaces */
+    --accent: 30 56% 46%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Signal Colors */
+    --signal-buy: 160 84% 39%;
+    --signal-buy-foreground: 0 0% 100%;
+    
+    --signal-sell: 0 84% 60%;
+    --signal-sell-foreground: 0 0% 100%;
+    
+    --signal-hold: 38 92% 50%;
+    --signal-hold-foreground: 0 0% 100%;
+
+    /* Card styling */
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 17%;
+
+    /* Popover styling */
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
+
+    /* Destructive actions */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 30 56% 46%;
+
+    --radius: 0.5rem;
+    
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 66% 12%), hsl(210 66% 20%));
+    --gradient-copper: linear-gradient(135deg, hsl(30 56% 46%), hsl(30 56% 56%));
+    --gradient-signal-buy: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 84% 49%));
+    
+    /* Shadows */
+    --shadow-elegant: 0 4px 6px rgba(10, 25, 49, 0.05);
+    --shadow-hover: 0 8px 12px rgba(10, 25, 49, 0.1);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 66% 8%;
+    --foreground: 0 0% 98%;
+
+    --primary: 30 56% 46%;
+    --primary-foreground: 210 66% 12%;
+
+    --copper: 30 56% 56%;
+    --copper-foreground: 210 66% 12%;
+    
+    --secondary: 210 66% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 210 66% 15%;
+    --muted-foreground: 220 13% 65%;
+
+    --accent: 30 56% 46%;
+    --accent-foreground: 210 66% 12%;
+
+    --signal-buy: 160 84% 45%;
+    --signal-buy-foreground: 0 0% 100%;
+    
+    --signal-sell: 0 84% 65%;
+    --signal-sell-foreground: 0 0% 100%;
+    
+    --signal-hold: 38 92% 55%;
+    --signal-hold-foreground: 0 0% 100%;
+
+    --card: 210 66% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 210 66% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 66% 20%;
+    --input: 210 66% 20%;
+    --ring: 30 56% 46%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-600;
+  }
+}

@@ -10,7 +10,7 @@
 <h3>Transform financial chaos into crystal-clear investment decisions.</h3>
 
 <p align="center">
-  <a href="#-demo">View Demo</a> •
+  <a href="https://youtu.be/6yqmeYyEJxU">View Demo</a> •
   <a href="#-the-problem">The Problem</a> •
   <a href="#-features">Key Features</a> •
   <a href="#-architecture">Architecture</a> •
@@ -214,3 +214,4 @@ npm run dev
 Built with ❤️ for **Mumbai Hacks**
 
 ---
+

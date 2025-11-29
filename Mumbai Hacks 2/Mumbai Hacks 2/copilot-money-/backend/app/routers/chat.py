@@ -15,7 +15,9 @@ router = APIRouter()
 def create_session(req: CreateSessionReq):
     session_id = str(uuid.uuid4())
     with Session(engine) as db:
-        sess = ChatSession(session_id=session_id, title=req.title)
+        # Include user_id from request to satisfy NOT NULL constraint
+        user_id = getattr(req, 'user_id', 'anonymous')  # Fallback to 'anonymous' if not provided
+        sess = ChatSession(session_id=session_id, user_id=user_id, title=req.title)
         db.add(sess)
         db.commit()
     return {"session_id": session_id}

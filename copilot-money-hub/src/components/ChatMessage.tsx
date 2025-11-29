@@ -39,15 +39,17 @@ interface ChatMessageProps {
     chart?: ChartData;
     type?: string;
     data?: any;
+    data?: any;
     onOptionSelect?: (value: string) => void;
+    onAutomate?: (stocks: any[]) => void;
 }
 
-export function ChatMessage({ role, content, timestamp, news, chart, type, data, onOptionSelect }: ChatMessageProps) {
+export function ChatMessage({ role, content, timestamp, news, chart, type, data, onOptionSelect, onAutomate }: ChatMessageProps) {
     const isUser = role === "user";
 
     const renderContent = () => {
         if (type === "stock_recommendation" && data) {
-            return <RecommendationView data={data} />;
+            return <RecommendationView data={data} onAutomate={onAutomate} />;
         }
         if (type === "market_analysis" && data) {
             return <MarketAnalysisView data={data} />;

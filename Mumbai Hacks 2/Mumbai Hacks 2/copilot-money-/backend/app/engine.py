@@ -44,8 +44,25 @@ class TradingEngine:
         for rule in rules:
             try:
                 # Fetch price
-                ticker = yf.Ticker(rule.symbol)
-                price = ticker.fast_info.last_price
+                symbol = rule.symbol
+                if symbol == "APPL":
+                    symbol = "AAPL"
+                
+                ticker = yf.Ticker(symbol)
+                try:
+                    price = ticker.fast_info.last_price
+                except:
+                    try:
+                        hist = ticker.history(period="1d")
+                        if not hist.empty:
+                            price = hist['Close'].iloc[-1]
+                        else:
+                            print(f"⚠️ No price data for {symbol}")
+                            continue
+                    except Exception as e:
+                        print(f"⚠️ Failed to fetch price for {symbol}: {e}")
+                        continue
+
                 if not price:
                     continue
                 

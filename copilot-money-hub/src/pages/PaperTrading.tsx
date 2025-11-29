@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Wallet, Trophy, Target, Sparkles, Trash2, Play, Pause } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { TrendingUp, Wallet, Trophy, Target, Sparkles, Trash2, Play, Pause, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { SymbolSearch } from "@/components/SymbolSearch";
@@ -32,7 +34,15 @@ interface AutoTradeRule {
   active: boolean;
 }
 
+interface BulkStock {
+  symbol: string;
+  quantity: number;
+  price?: number;
+  currentPrice?: number;
+}
+
 const PaperTrading = () => {
+  const location = useLocation();
   const [orderType, setOrderType] = useState<"BUY" | "SELL">("BUY");
   const [symbol, setSymbol] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -40,6 +50,11 @@ const PaperTrading = () => {
   const [stopLoss, setStopLoss] = useState("");
   const [targetPrice, setTargetPrice] = useState("");
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+
+  // Bulk Automation State
+  const [isBulkOpen, setIsBulkOpen] = useState(false);
+  const [bulkStocks, setBulkStocks] = useState<BulkStock[]>([]);
+  const [isExecutingBulk, setIsExecutingBulk] = useState(false);
 
   const [virtualBalance, setVirtualBalance] = useState(0);
   const [totalPL, setTotalPL] = useState(0);
@@ -80,6 +95,27 @@ const PaperTrading = () => {
     const timeout = setTimeout(fetchPrice, 500);
     return () => clearTimeout(timeout);
   }, [symbol]);
+
+  useEffect(() => {
+    if (location.state && location.state.automateStocks) {
+      const stocks = location.state.automateStocks;
+      if (stocks && stocks.length > 0) {
+        // Map recommendations to BulkStock format
+        const mappedStocks: BulkStock[] = stocks.map((s: any) => ({
+          symbol: s.symbol,
+          quantity: 10, // Default quantity
+          price: s.buy_price ? parseFloat(s.buy_price.replace(/[$,]/g, '')) : undefined,
+          currentPrice: undefined
+        }));
+
+        setBulkStocks(mappedStocks);
+        setIsBulkOpen(true);
+
+        // Clear state to avoid re-triggering on refresh
+        window.history.replaceState({}, document.title);
+      }
+    }
+  }, [location.state]);
 
   const fetchPortfolio = async (uid: string) => {
     try {
@@ -195,6 +231,66 @@ const PaperTrading = () => {
     }
   };
 
+  const handleBulkExecute = async () => {
+    if (!userId || bulkStocks.length === 0) return;
+
+    setIsExecutingBulk(true);
+    let successCount = 0;
+
+    try {
+      for (const stock of bulkStocks) {
+        try {
+          const res = await fetch(`${API_BASE_URL}/trading/paper/trade`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: userId,
+              symbol: stock.symbol.toUpperCase(),
+              type: "BUY",
+              quantity: stock.quantity,
+              price: stock.price || null, // Use limit price if set, else Market
+              stop_loss: null,
+              target_price: null
+            })
+          });
+
+          if (res.ok) {
+            successCount++;
+          }
+        } catch (e) {
+          console.error(`Failed to trade ${stock.symbol}`, e);
+        }
+      }
+
+      if (successCount > 0) {
+        toast.success(`Successfully executed ${successCount} trades`);
+        fetchPortfolio(userId);
+        fetchHistory(userId);
+        setIsBulkOpen(false);
+        setBulkStocks([]);
+      } else {
+        toast.error("Failed to execute trades");
+      }
+
+    } catch (e) {
+      toast.error("Error executing bulk trades");
+    } finally {
+      setIsExecutingBulk(false);
+    }
+  };
+
+  const updateBulkStock = (index: number, field: keyof BulkStock, value: any) => {
+    const newStocks = [...bulkStocks];
+    newStocks[index] = { ...newStocks[index], [field]: value };
+    setBulkStocks(newStocks);
+  };
+
+  const removeBulkStock = (index: number) => {
+    const newStocks = bulkStocks.filter((_, i) => i !== index);
+    setBulkStocks(newStocks);
+    if (newStocks.length === 0) setIsBulkOpen(false);
+  };
+
   const leaderboard = [
     { rank: 1, name: "InvestorPro", returns: 24.5, trades: 45 },
     { rank: 2, name: "MarketGuru", returns: 21.2, trades: 38 },
@@ -232,7 +328,7 @@ const PaperTrading = () => {
               <p className="text-sm text-muted-foreground">Virtual Balance</p>
             </div>
             <p className="text-3xl font-bold font-mono text-foreground">
-              ₹{virtualBalance.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+              ${virtualBalance.toLocaleString("en-US", { maximumFractionDigits: 2 })}
             </p>
           </Card>
 
@@ -243,7 +339,7 @@ const PaperTrading = () => {
             </div>
             <div className="flex items-baseline gap-2">
               <p className={`text-3xl font-bold font-mono ${totalPL >= 0 ? "text-signal-buy" : "text-signal-sell"}`}>
-                {totalPL >= 0 ? "+" : ""}₹{totalPL.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                {totalPL >= 0 ? "+" : ""}${totalPL.toLocaleString("en-US", { maximumFractionDigits: 2 })}
               </p>
               <span className={`text-lg font-medium ${totalPL >= 0 ? "text-signal-buy" : "text-signal-sell"}`}>
                 ({plPercent >= 0 ? "+" : ""}{plPercent.toFixed(2)}%)
@@ -317,7 +413,7 @@ const PaperTrading = () => {
                           <Label>Current Price</Label>
                           <div className="mt-1 h-10 px-3 py-2 rounded-md border border-input bg-background font-mono flex items-center">
                             {currentPrice !== null ? (
-                              <span className="font-bold">₹{currentPrice.toFixed(2)}</span>
+                              <span className="font-bold">${currentPrice.toFixed(2)}</span>
                             ) : (
                               <span className="text-muted-foreground text-sm">Select stock</span>
                             )}
@@ -436,7 +532,7 @@ const PaperTrading = () => {
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="text-sm text-muted-foreground">
-                            <span className="font-mono">{trade.quantity} @ ₹{trade.price.toFixed(2)}</span>
+                            <span className="font-mono">{trade.quantity} @ ${trade.price.toFixed(2)}</span>
                           </div>
                           <Badge variant={trade.status === "PENDING" ? "outline" : "secondary"} className="text-xs">
                             {trade.status}
@@ -496,6 +592,68 @@ const PaperTrading = () => {
             </Card>
           </div>
         </div>
+
+        {/* Bulk Automation Dialog */}
+        <Dialog open={isBulkOpen} onOpenChange={setIsBulkOpen}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>Automate Recommended Stocks</DialogTitle>
+              <DialogDescription>
+                Review and adjust the stocks before executing trades.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="py-4 space-y-4 max-h-[60vh] overflow-y-auto">
+              {bulkStocks.map((stock, idx) => (
+                <div key={idx} className="flex items-center gap-4 p-4 border rounded-lg bg-card">
+                  <div className="w-16 font-bold text-lg">{stock.symbol}</div>
+
+                  <div className="flex-1 grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-xs">Quantity</Label>
+                      <Input
+                        type="number"
+                        value={stock.quantity}
+                        onChange={(e) => updateBulkStock(idx, 'quantity', parseInt(e.target.value) || 0)}
+                        className="h-8"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs">Limit Price (Optional)</Label>
+                      <Input
+                        type="number"
+                        value={stock.price || ''}
+                        placeholder="Market"
+                        onChange={(e) => updateBulkStock(idx, 'price', e.target.value ? parseFloat(e.target.value) : undefined)}
+                        className="h-8"
+                      />
+                    </div>
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-muted-foreground hover:text-destructive"
+                    onClick={() => removeBulkStock(idx)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsBulkOpen(false)}>Cancel</Button>
+              <Button
+                onClick={handleBulkExecute}
+                disabled={isExecutingBulk}
+                className="bg-copper hover:bg-copper/90 text-copper-foreground"
+              >
+                {isExecutingBulk ? "Executing..." : `Proceed with ${bulkStocks.length} Trades`}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

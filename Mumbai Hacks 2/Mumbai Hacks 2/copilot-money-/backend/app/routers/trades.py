@@ -942,3 +942,100 @@ async def get_trade_analysis(symbol: str):
         }
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+@router.get("/profile-summary/{user_id}")
+async def get_profile_summary(user_id: str, db: Session = Depends(get_session)):
+    """Generate a profile summary of user based on their last 20 trades"""
+    try:
+        # Import the Transaction model from trading_models
+        from app.trading_models import Transaction, Portfolio
+        
+        # Get user's portfolio to access transactions
+        portfolio = db.exec(select(Portfolio).where(Portfolio.user_id == user_id)).first()
+        
+        if not portfolio:
+            return {"success": False, "error": "No trading history found for this user"}
+        
+        # Get last 20 transactions
+        transactions = db.exec(
+            select(Transaction)
+            .where(Transaction.portfolio_id == portfolio.id)
+            .order_by(desc(Transaction.timestamp))
+            .limit(20)
+        ).all()
+        
+        if not transactions or len(transactions) == 0:
+            return {"success": False, "error": "No trades found in your history"}
+        
+        # Format transactions for LLM
+        trades_context = []
+        for txn in transactions:
+            trades_context.append({
+                "symbol": txn.symbol,
+                "type": txn.type,
+                "quantity": txn.quantity,
+                "price": txn.price,
+                "timestamp": txn.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+            })
+        
+        # Create prompt for LLM to analyze trading patterns
+        system_prompt = """You are a senior financial analyst and trading psychology expert specializing in behavioral finance. 
+
+Your task is to analyze a trader's transaction history and create a highly personalized trading profile summary.
+
+**CRITICAL REQUIREMENTS:**
+1. Analyze ONLY the data provided - do not make general assumptions
+2. Be SPECIFIC - mention actual stock symbols, trade quantities, and patterns you observe
+3. Write in a warm, conversational tone using "you" and "your"
+4. Structure as 3-4 flowing paragraphs (NO bullet points, NO numbered lists)
+5. Reference concrete examples from their trades
+
+**What to analyze:**
+- Trading Style: Identify patterns in timing (day trading vs swing trading vs buy-and-hold)
+- Stock Selection: Which specific stocks/sectors they trade (mention symbols like AAPL, NVDA, etc.)
+- Position Sizing: Note if they take large or small positions, consistency in quantities
+- Buy/Sell Behavior: Do they buy and hold? Flip quickly? When do they take profits/losses?
+- Risk Profile: Infer from stock choices and position sizes
+- Trading Patterns: Any noticeable habits (e.g., buying tech stocks, avoiding certain sectors, consistent timing)
+
+**Output Structure:**
+Paragraph 1: Overall trading style and activity level with specific examples
+Paragraph 2: Stock preferences, sectors, and position sizing with actual symbols mentioned
+Paragraph 3: Notable patterns and behaviors you've identified
+Paragraph 4 (optional): 2-3 personalized suggestions to improve their strategy
+
+Example tone: "Based on your recent trading activity, you've been quite active in the technology sector, with notable positions in NVDA and AAPL. Your trading style suggests..."
+
+Be insightful, specific, and helpful."""
+
+        user_prompt = f"""Analyze this trader's last {len(transactions)} transactions and create their personalized trading profile summary.
+
+TRANSACTION DATA (most recent first):
+{json.dumps(trades_context, indent=2)}
+
+Remember: Be specific, mention actual stock symbols, reference concrete patterns, and write in friendly paragraph form."""
+
+        # Call LLM
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            max_tokens=800,
+            temperature=0.7
+        )
+        
+        summary = completion.choices[0].message.content
+        
+        return {
+            "success": True,
+            "data": {
+                "summary": summary,
+                "trades_analyzed": len(transactions)
+            }
+        }
+        
+    except Exception as e:
+        print(f"Profile summary error: {e}")
+        return {"success": False, "error": str(e)}

@@ -24,11 +24,12 @@ interface RecommendationViewProps {
         summary: string;
         recommendations: Recommendation[];
     };
+    onAutomate?: (stocks: Recommendation[]) => void;
 }
 
 
 
-export function RecommendationView({ data }: RecommendationViewProps) {
+export function RecommendationView({ data, onAutomate }: RecommendationViewProps) {
     const [selectedStock, setSelectedStock] = useState<Recommendation | null>(data.recommendations[0] || null);
     const [chartData, setChartData] = useState<any[]>([]);
     const [loadingChart, setLoadingChart] = useState(false);
@@ -386,6 +387,17 @@ export function RecommendationView({ data }: RecommendationViewProps) {
                     </div>
                 )
             }
+
+
+            {/* 6. Automate Button */}
+            <div className="flex justify-center pt-4">
+                <Button
+                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold py-6 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+                    onClick={() => onAutomate && onAutomate(data.recommendations)}
+                >
+                    Automate these stocks →
+                </Button>
+            </div>
         </div >
     );
 }

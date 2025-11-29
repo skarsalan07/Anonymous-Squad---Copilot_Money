@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { TradingSidebar } from "@/components/TradingSidebar";
 import { ChatMessage } from "@/components/ChatMessage";
@@ -30,6 +31,7 @@ const TradesChat: React.FC<TradesChatProps> = ({ initialSessionId }) => {
     const [sessionId, setSessionId] = useState<string>(initialSessionId || "");
     const [awaitingSymbolFor, setAwaitingSymbolFor] = useState<"research" | "trade" | null>(null);
     const [isHeroState, setIsHeroState] = useState(true);
+    const navigate = useNavigate();
 
     // Interview State
     const [interviewStep, setInterviewStep] = useState(0);
@@ -394,15 +396,76 @@ const TradesChat: React.FC<TradesChatProps> = ({ initialSessionId }) => {
                 content: "Please enter the stock symbol you want to research (e.g., AAPL, TSLA).",
                 timestamp: "Just now"
             }]);
-        } else if (feature === "trade_analysis") {
-            setAwaitingSymbolFor("trade");
+        } else if (feature === "profile_summary") {
+            // Directly fetch profile summary without asking for symbol
+            handleProfileSummary();
+        }
+    };
+
+    const handleProfileSummary = async () => {
+        setIsHeroState(false);
+
+        // Add user message
+        setMessages((prev) => [...prev, {
+            id: Date.now().toString(),
+            role: "user",
+            content: "Show me my Profile Summary",
+            timestamp: "Just now"
+        }]);
+
+        // Add loading message
+        const loadingId = `loading-${Date.now()}`;
+        setMessages((prev) => [...prev, {
+            id: loadingId,
+            role: "assistant",
+            content: "Analyzing your trading history...",
+            timestamp: "Just now"
+        }]);
+
+        try {
+            // Get user ID from Supabase
+            const { supabase } = await import("@/integrations/supabase/client");
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                throw new Error("User not authenticated");
+            }
+
+            const response = await fetch(`${API_BASE_URL}/trades/profile-summary/${user.id}`);
+            const resData = await response.json();
+
+            // Remove loading message
+            setMessages((prev) => prev.filter(m => m.id !== loadingId));
+
+            if (resData.success) {
+                setMessages((prev) => [...prev, {
+                    id: (Date.now() + 1).toString(),
+                    role: "assistant",
+                    content: resData.data.summary,
+                    timestamp: "Just now"
+                }]);
+            } else {
+                setMessages((prev) => [...prev, {
+                    id: (Date.now() + 1).toString(),
+                    role: "assistant",
+                    content: "Sorry, I couldn't generate your profile summary. Please make sure you have some trades in your history.",
+                    timestamp: "Just now"
+                }]);
+            }
+        } catch (e) {
+            console.error(e);
+            setMessages((prev) => prev.filter(m => m.id !== loadingId));
             setMessages((prev) => [...prev, {
-                id: Date.now().toString(),
+                id: (Date.now() + 1).toString(),
                 role: "assistant",
-                content: "Please enter the stock symbol for trade analysis (e.g., BTC-USD, NVDA).",
+                content: "Error generating profile summary. Please try again.",
                 timestamp: "Just now"
             }]);
         }
+    };
+
+    const handleAutomate = (stocks: any[]) => {
+        navigate("/paper-trading", { state: { automateStocks: stocks } });
     };
 
     return (
@@ -437,6 +500,7 @@ const TradesChat: React.FC<TradesChatProps> = ({ initialSessionId }) => {
                                         type={msg.type}
                                         data={msg.data}
                                         onOptionSelect={handleSendMessage}
+                                        onAutomate={handleAutomate}
                                     />
                                 ))}
                                 {awaitingSymbolFor && (
@@ -489,10 +553,10 @@ const TradesChat: React.FC<TradesChatProps> = ({ initialSessionId }) => {
                                 <Button
                                     variant="outline"
                                     className="gap-2 rounded-full bg-background/50 backdrop-blur-sm border-primary/20 hover:bg-primary/10 hover:border-primary/50 transition-all"
-                                    onClick={() => handleFeatureSelect("trade_analysis")}
+                                    onClick={() => handleFeatureSelect("profile_summary")}
                                 >
                                     <LineChart className="h-4 w-4 text-purple-500" />
-                                    Trade Analysis
+                                    Profile Summary
                                 </Button>
                             </div>
 

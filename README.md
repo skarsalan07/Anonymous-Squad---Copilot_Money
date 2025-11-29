@@ -1,531 +1,84 @@
-# 🚀 Copilot_Money - AI-Powered Trading Psychology Platform
+# 🚀 Copilot_Money - Your AI-Powered Investment Psychologist
 
 <div align="center">
 
-![Copilot Money Banner](https://img.shields.io/badge/AI-Powered-blue?style=for-the-badge&logo=openai)
-![Paper Trading](https://img.shields.io/badge/Paper-Trading-green?style=for-the-badge)
-![Real-time](https://img.shields.io/badge/Real--time-Analysis-orange?style=for-the-badge)
+![Copilot Money Banner](https://img.shields.io/badge/Mumbai%20Hacks%202-Finalist-FFD700?style=for-the-badge&logo=trophy)
+![AI-Powered](https://img.shields.io/badge/AI--Powered-Groq-blueviolet?style=for-the-badge&logo=openai)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)
 
-**Transform financial chaos into crystal-clear investment decisions with AI-powered intelligence**
+**Transforming financial chaos into crystal-clear wisdom.**
+*Don't just trade. Trade with conviction.*
 
-[Features](#-features) • [Tech Stack](#-tech-stack) • [Quick Start](#-quick-start) • [Demo](#-demo) • [Architecture](#-architecture)
+[View Demo](#-demo) • [The Problem](#-the-problem--the-paradox) • [Architecture](#-high-level-architecture) • [Run Locally](#-quick-start)
 
 </div>
 
 ---
 
-## 📋 Table of Contents
+## 💡 The Problem: The Paradox of Choice
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Quick Start](#-quick-start)
-- [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [Contributing](#-contributing)
-- [License](#-license)
+Every day, millions of Indian retail investors face a paradox. They have more access to information than ever before—broker tips, flashy news headlines, and constant app alerts. Yet, this **Information Overload** leaves them confused, not confident.
+
+This pushes investors into two dangerous traps:
+1.  **The Analysis Paralysis Trap:** Fear of making a misstep leads to inaction, watching opportunities pass by.
+2.  **The FOMO Trap:** Hype-driven, emotional decisions that lead to painful losses.
+
+**The missing piece isn't more data. It's a trusted guide.**
 
 ---
 
-## 🎯 Overview
+## 💎 The Solution: Copilot_Money
 
-**Copilot_Money** is an innovative AI-powered trading psychology platform built for the **Mumbai Hacks 2** hackathon. It combines real-time market intelligence, automated paper trading, and AI-driven insights to help retail investors make informed decisions.
+**Copilot_Money** is an intelligent source of truth designed to cut through the noise. We built a 3-step engine to turn chaos into actionable wealth creation:
 
-### 🏆 Hackathon Highlights
-
-- **AI-Powered Chat Assistant**: Voice and text-based conversational AI for trading queries
-- **Automated Trading Engine**: Real-time rule-based trading with stop-loss and take-profit
-- **Paper Trading Platform**: Risk-free trading simulation with real market data
-- **Portfolio Analytics**: Comprehensive portfolio tracking and performance analysis
-- **Market Intelligence**: Real-time news aggregation and sentiment analysis
-- **SEBI Compliance**: Built with regulatory compliance in mind
+1.  **Gather Intelligence:** We aggregate data from trusted brokers, financial analysts, and real-time market news.
+2.  **Find the Signal (AI):** Our Groq-powered LLM stress-tests ideas, compares conflicting viewpoints, and performs sentiment analysis to find high-conviction opportunities.
+3.  **Actionable Guidance:** We translate complex analysis into simple "Buy, Sell, or Hold" signals, with an automated engine to execute trades or paper-trade risk-free.
 
 ---
 
-## ✨ Features
+## 🏗 High-Level Architecture
 
-### 🤖 AI Trading Assistant
-
-- **Conversational AI**: Powered by Groq's LLM for natural language trading queries
-- **Voice Integration**: Speak your trading questions and get instant AI responses
-- **Profile Analysis**: AI-generated trading profile based on your last 20 trades
-- **Smart Recommendations**: Context-aware stock suggestions based on market conditions
-- **Multi-mode Chat**: Support for different conversation modes (analysis, recommendations, general queries)
-
-### 📊 Paper Trading Platform
-
-- **Real-time Market Data**: Live stock prices via Yahoo Finance API
-- **Bulk Trade Execution**: Execute multiple trades simultaneously
-- **Trade History**: Complete transaction history with detailed analytics
-- **Portfolio Tracking**: Real-time portfolio valuation and P&L tracking
-- **Symbol Search**: Quick search and selection of stocks
-
-### ⚡ Automated Trading Engine
-
-- **Rule-Based Trading**: Set custom trading rules (e.g., "Buy when price < $150")
-- **Auto-Execution**: Background engine monitors and executes trades automatically
-- **Stop-Loss & Take-Profit**: Automated risk management
-- **Real-time Monitoring**: Checks active rules every 10 seconds
-- **Trade Notifications**: Instant alerts on executed trades
-
-### 📈 Portfolio Management
-
-- **Holdings Overview**: View all your positions with current valuations
-- **Performance Metrics**: Track gains/losses, ROI, and portfolio distribution
-- **Transaction History**: Detailed log of all buy/sell transactions
-- **Balance Management**: Virtual cash balance tracking
-- **Multi-stock Support**: Manage diverse portfolios
-
-### 📰 Market Intelligence
-
-- **Real-time News**: Aggregated news from multiple sources via DuckDuckGo Search
-- **Stock-specific News**: Get news for specific tickers
-- **Sentiment Analysis**: AI-powered sentiment scoring
-- **Intelligence Feed**: Curated market updates and insights
-
-### 🎨 Modern UI/UX
-
-- **Dark/Light Mode**: Fully themed interface with smooth transitions
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile
-- **Real-time Charts**: Interactive stock charts using Lightweight Charts
-- **Markdown Support**: Rich text rendering for AI responses
-- **Toast Notifications**: User-friendly feedback system
-
-### 🔐 Authentication & Security
-
-- **Supabase Auth**: Secure authentication with Google OAuth
-- **Session Management**: Persistent user sessions
-- **Data Privacy**: User data isolation and protection
-- **Environment Variables**: Secure API key management
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
-
-| Technology | Purpose |
-|------------|---------|
-| **React 18** | UI framework |
-| **TypeScript** | Type-safe development |
-| **Vite** | Build tool and dev server |
-| **TailwindCSS** | Utility-first styling |
-| **shadcn/ui** | Component library |
-| **React Router** | Client-side routing |
-| **TanStack Query** | Data fetching and caching |
-| **Axios** | HTTP client |
-| **Lightweight Charts** | Stock charting |
-| **React Markdown** | Markdown rendering |
-| **Sonner** | Toast notifications |
-| **Lucide React** | Icon library |
-
-### Backend
-
-| Technology | Purpose |
-|------------|---------|
-| **FastAPI** | Python web framework |
-| **SQLModel** | SQL database ORM |
-| **Alembic** | Database migrations |
-| **Groq API** | LLM for AI chat |
-| **yfinance** | Stock market data |
-| **DuckDuckGo Search** | News aggregation |
-| **Pandas** | Data manipulation |
-| **Uvicorn** | ASGI server |
-| **PostgreSQL/SQLite** | Database (configurable) |
-
-### DevOps & Tools
-
-- **Git** - Version control
-- **Python 3.10+** - Backend runtime
-- **Node.js 18+** - Frontend runtime
-- **npm** - Package management
-- **dotenv** - Environment configuration
-
----
-
-## 🏗 Architecture
+We designed a modular, event-driven architecture to handle real-time market data and AI processing simultaneously.
 
 ```mermaid
-graph TB
-    subgraph Frontend
-        A[React App] --> B[React Router]
-        B --> C[Pages]
-        C --> D[Components]
-        D --> E[UI Components]
+graph TD
+    subgraph Client_Side
+        UI[React + Vite UI]
+        Voice[Voice Input/Output]
     end
-    
-    subgraph Backend
-        F[FastAPI Server] --> G[Routers]
-        G --> H[Chat Router]
-        G --> I[Trading Router]
-        G --> J[Stocks Router]
-        G --> K[News Router]
-        G --> L[Preferences Router]
+
+    subgraph API_Gateway
+        FastAPI[FastAPI Backend]
+        Auth[Supabase Auth]
     end
-    
-    subgraph Services
-        M[Groq LLM]
-        N[Yahoo Finance]
-        O[DuckDuckGo Search]
-        P[Supabase Auth]
+
+    subgraph Intelligence_Layer
+        Groq[Groq LLM Engine]
+        Sent[Sentiment Analyzer]
     end
-    
-    subgraph Data Layer
-        Q[SQLite/PostgreSQL]
-        R[Trading Engine]
+
+    subgraph Data_Aggregator
+        Yahoo[Yahoo Finance API]
+        News[DuckDuckGo News]
+        DB[(PostgreSQL/SQLite)]
     end
+
+    subgraph Execution_Engine
+        Paper[Paper Trading Sim]
+        Rules[Rule-Based Trigger]
+    end
+
+    UI -->|REST/WebSockets| FastAPI
+    Voice -->|Audio Stream| FastAPI
+    FastAPI -->|Validate| Auth
+    FastAPI -->|Query| Groq
+    FastAPI -->|Fetch Data| Yahoo
+    FastAPI -->|Fetch News| News
+    FastAPI -->|Store/Retrieve| DB
     
-    A -->|HTTP/REST| F
-    H -->|AI Queries| M
-    I -->|Market Data| N
-    K -->|News| O
-    A -->|Auth| P
-    F -->|ORM| Q
-    R -->|Background Jobs| Q
-```
-
-### Key Components
-
-1. **Frontend (React SPA)**
-   - Modern, responsive UI built with React and TypeScript
-   - Real-time updates using TanStack Query
-   - Component-based architecture with shadcn/ui
-
-2. **Backend (FastAPI)**
-   - RESTful API with automatic OpenAPI documentation
-   - Async request handling for better performance
-   - Modular router-based architecture
-
-3. **Trading Engine**
-   - Background thread monitoring active trading rules
-   - Real-time price fetching and condition evaluation
-   - Automatic trade execution and portfolio updates
-
-4. **Database Layer**
-   - SQLModel for type-safe database operations
-   - Support for both SQLite (development) and PostgreSQL (production)
-   - Alembic for database migrations
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- **Node.js** (v18 or later)
-- **Python** (v3.10 or later)
-- **Git**
-- **Groq API Key** ([Get one here](https://console.groq.com))
-
-### Installation
-
-#### 1. Clone the Repository
-
-```bash
-git clone https://github.com/skarsalan07/Anonymous-Squad---Copilot_Money.git
-cd Anonymous-Squad---Copilot_Money
-```
-
-#### 2. Backend Setup
-
-```bash
-# Navigate to backend directory
-cd "Mumbai Hacks 2/Mumbai Hacks 2/copilot-money-/backend"
-
-# Create virtual environment (recommended)
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-.\venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Create .env file
-cp .env.example .env
-
-# Edit .env and add your API keys
-# Required: GROQ_API_KEY
-# Optional: DATABASE_URL (defaults to SQLite)
-```
-
-**Example `.env` file:**
-```env
-GROQ_API_KEY="your_groq_api_key_here"
-API_HOST=0.0.0.0
-API_PORT=8000
-DATABASE_URL=sqlite:///./data_v2.db
-```
-
-```bash
-# Start the backend server
-python main.py
-```
-
-The backend will start at `http://localhost:8000`
-
-#### 3. Frontend Setup
-
-Open a new terminal:
-
-```bash
-# Navigate to frontend directory
-cd copilot-money-hub
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-The frontend will start at `http://localhost:8080` (or similar)
-
-#### 4. Access the Application
-
-Open your browser and navigate to the frontend URL (usually `http://localhost:8080`)
-
----
-
-## 📁 Project Structure
-
-```
-Anonymous-Squad---Copilot_Money/
-├── copilot-money-hub/              # Frontend React Application
-│   ├── src/
-│   │   ├── components/             # Reusable UI components
-│   │   │   ├── chat/              # Chat-related components
-│   │   │   ├── ui/                # shadcn/ui components
-│   │   │   ├── Navigation.tsx     # Main navigation
-│   │   │   ├── PortfolioOverview.tsx
-│   │   │   ├── SignalCard.tsx
-│   │   │   └── ...
-│   │   ├── pages/                 # Route pages
-│   │   │   ├── Index.tsx          # Landing page
-│   │   │   ├── Chat.tsx           # AI Chat interface
-│   │   │   ├── PaperTrading.tsx   # Paper trading platform
-│   │   │   ├── Portfolio.tsx      # Portfolio management
-│   │   │   ├── StockDetail.tsx    # Stock details view
-│   │   │   ├── Compliance.tsx     # Compliance page
-│   │   │   └── Auth.tsx           # Authentication
-│   │   ├── integrations/          # External integrations
-│   │   │   └── supabase/          # Supabase client
-│   │   ├── hooks/                 # Custom React hooks
-│   │   ├── lib/                   # Utility functions
-│   │   ├── styles/                # CSS styles
-│   │   └── App.tsx                # Main app component
-│   ├── public/                    # Static assets
-│   ├── package.json
-│   └── vite.config.ts
-│
-├── Mumbai Hacks 2/Mumbai Hacks 2/copilot-money-/
-│   ├── backend/                   # Backend FastAPI Application
-│   │   ├── app/
-│   │   │   ├── routers/          # API route handlers
-│   │   │   │   ├── chat.py       # Chat endpoints
-│   │   │   │   ├── trading.py    # Trading endpoints
-│   │   │   │   ├── trades.py     # Trade execution
-│   │   │   │   ├── stocks.py     # Stock data
-│   │   │   │   ├── news.py       # News aggregation
-│   │   │   │   └── preferences.py # User preferences
-│   │   │   ├── db.py             # Database setup
-│   │   │   ├── engine.py         # Trading engine
-│   │   │   ├── models.py         # Database models
-│   │   │   ├── schemas.py        # Pydantic schemas
-│   │   │   ├── groq_client.py    # Groq API client
-│   │   │   └── utils.py          # Utility functions
-│   │   ├── migrations/           # Database migrations
-│   │   ├── main.py               # FastAPI app entry point
-│   │   ├── requirements.txt      # Python dependencies
-│   │   └── .env.example          # Environment template
-│   │
-│   └── frontend/                 # (Legacy frontend - not in use)
-│
-├── README.md                     # This file
-├── RUN_GUIDE.md                  # Detailed setup guide
-└── .gitignore
-```
-
----
-
-## 📡 API Documentation
-
-Once the backend is running, visit:
-- **Swagger UI**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
-
-### Key Endpoints
-
-#### Chat API
-- `POST /api/chat/sessions` - Create new chat session
-- `POST /api/chat/sessions/{session_id}/messages` - Send message
-
-#### Trading API
-- `GET /api/trading/portfolio` - Get user portfolio
-- `POST /api/trading/rules` - Create auto-trade rule
-- `GET /api/trading/rules` - List active rules
-- `DELETE /api/trading/rules/{rule_id}` - Delete rule
-
-#### Trades API
-- `POST /api/trades/execute` - Execute manual trade
-- `GET /api/trades/history` - Get trade history
-- `GET /api/trades/holdings` - Get current holdings
-
-#### Stocks API
-- `GET /api/stocks/price/{symbol}` - Get stock price
-- `GET /api/stocks/chart/{symbol}` - Get chart data
-
-#### News API
-- `GET /api/news` - Get general market news
-- `GET /api/news/{ticker}` - Get ticker-specific news
-
-#### Preferences API
-- `POST /api/preferences` - Save user preferences
-- `GET /api/preferences` - Get user preferences
-- `POST /api/preferences/recommendations` - Get AI recommendations
-
----
-
-## 🎮 Demo
-
-### Key User Flows
-
-#### 1. AI Chat Assistant
-1. Navigate to Chat page
-2. Ask questions like "What's the price of AAPL?"
-3. Get AI-powered responses with market insights
-4. Use voice input for hands-free interaction
-
-#### 2. Paper Trading
-1. Go to Paper Trading page
-2. Search for a stock symbol
-3. Enter quantity and price
-4. Execute BUY or SELL trades
-5. View updated portfolio and balance
-
-#### 3. Automated Trading
-1. Set up trading rules (e.g., "Buy AAPL when price < $150")
-2. Activate the rule
-3. Trading engine monitors in background
-4. Automatic execution when conditions are met
-5. Receive notifications on trade execution
-
-#### 4. Portfolio Analysis
-1. Visit Portfolio page
-2. View all holdings with current values
-3. Check transaction history
-4. Analyze performance metrics
-5. Get AI-generated profile summary
-
----
-
-## 🔧 Configuration
-
-### Environment Variables
-
-#### Backend (.env)
-```env
-# Required
-GROQ_API_KEY=your_groq_api_key_here
-
-# Optional
-API_HOST=0.0.0.0
-API_PORT=8000
-DATABASE_URL=sqlite:///./data_v2.db
-# For PostgreSQL:
-# DATABASE_URL=postgresql://user:password@host:5432/dbname
-```
-
-#### Frontend
-The frontend uses Supabase for authentication. Configure in `src/integrations/supabase/client.ts`
-
----
-
-## 🧪 Testing
-
-### Backend Tests
-```bash
-cd "Mumbai Hacks 2/Mumbai Hacks 2/copilot-money-/backend"
-python test_backend.py
-```
-
-### Frontend Build
-```bash
-cd copilot-money-hub
-npm run build
-```
-
----
-
-## 🚧 Roadmap
-
-- [ ] Mobile app (React Native)
-- [ ] Advanced charting with technical indicators
-- [ ] Social trading features
-- [ ] Integration with real brokers (Zerodha, Upstox)
-- [ ] Advanced AI models for prediction
-- [ ] Multi-language support
-- [ ] Backtesting engine
-- [ ] Options and derivatives trading
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-## 👥 Team - Anonymous Squad
-
-Built with ❤️ for Mumbai Hacks 2
-
-- **Project Lead**: [Your Name]
-- **Frontend Developer**: [Team Member]
-- **Backend Developer**: [Team Member]
-- **AI/ML Engineer**: [Team Member]
-
----
-
-## 🙏 Acknowledgments
-
-- **Groq** for providing the LLM API
-- **Yahoo Finance** for market data
-- **shadcn/ui** for beautiful components
-- **Supabase** for authentication infrastructure
-- **Mumbai Hacks 2** for the opportunity
-
----
-
-## 📞 Support
-
-For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Email: support@copilotmoney.com
-- Twitter: [@CopilotMoney](https://twitter.com/copilotmoney)
-
----
-
-<div align="center">
-
-**⭐ Star this repo if you find it helpful!**
-
-Made with 💻 and ☕ by Anonymous Squad
-
-</div>
+    Groq -->|Context| DB
+    Groq -->|Analyze| Sent
+    
+    FastAPI -->|Execute| Execution_Engine
+    Execution_Engine -->|Update Portfolio| DB
